@@ -1,0 +1,4 @@
+airflow
+snowflake-connector-python
+pandas
+requests

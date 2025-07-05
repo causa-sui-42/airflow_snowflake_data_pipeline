@@ -1,5 +1,8 @@
 # Airflow + Snowflake data pipeline
+### This project builds an end-to-end data pipeline using Apache Airflow and Snowflake. It covers both batch and simulated streaming ingestion, transformations, and basic quality checks.
 **The Goal of the project**: Extract data from a public API or CSV, load it into Snowflake (a staging table), transform it (into a fact/dim model), and validate with Airflow DAGs.
+
+
 
 Tools:
 
@@ -113,3 +116,55 @@ stream_simulator.py appends a JSON log every 30 seconds to `data/streaming_logs/
 - Clean transforms as modular models
 - Enables documentation and lineage
 - dbt can be triggered from Airflow or CLI
+
+
+## 🚀 Setup Instructions
+
+### 1. Clone the Repo
+```bash
+git clone https://github.com/causa-sui-42/airflow_snowflake_data_pipeline.git
+cd airflow_snowflake_data_pipeline
+```
+
+### 2. Set Up Docker + Airflow
+```bash
+docker-compose up airflow-init
+docker-compose up
+```
+
+### 3. Configure Airflow
+- Go to http://localhost:8080
+- Login (default: `airflow` / `airflow`)
+- Add **Snowflake connection** via UI:
+  - Conn ID: `snowflake_default`
+  - Type: Snowflake
+  - Fill in account, user, password, warehouse, db, schema
+
+### 4. Start Simulated Stream
+```bash
+python scripts/stream_simulator.py
+```
+
+### 5. Trigger DAGs
+- Enable and trigger `airflow_snowflake_pipeline`
+- Enable and trigger `streaming_pipeline`
+
+## Dependencies
+Listed in `requirements.txt`, e.g.
+```txt
+airflow
+snowflake-connector-python
+pandas
+requests
+```
+
+## Tables Created
+- `raw_users` → Raw user data
+- `clean_users` → Cleaned user data
+- `raw_events` → Streaming logs
+- `fact_user_activity` → Events aggregated per user
+
+## Extensions
+- Add dbt models for `dim_users` and `user_event_metrics`
+- Trigger dbt from Airflow
+- Connect S3 → Snowpipe for real streaming
