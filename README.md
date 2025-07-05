@@ -43,6 +43,7 @@ Tools:
 
 
 **Project structure**:
+```
 
 project_root/
 ├── dags/
@@ -79,6 +80,8 @@ project_root/
     ├── extract_users.py                   # Extract user data from API
     ├── stream_simulator.py                # Append fake logs to simulate streaming
     └── snowflake_loader.py                # Load JSON/CSV to Snowflake using connector
+
+```
 
 #### Main Airflow DAG (airflow_snowflake_pipeline.py):
 - Extract user data from public API
