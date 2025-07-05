@@ -3,12 +3,40 @@
 
 Tools:
 
-  Airflow: Orchestration
+ -  Airflow: Orchestration
   
-  Snowflake: Data warehouse
+ -  Snowflake: Data warehouse
   
-  Python: Scripts
+ -  Python: Scripts
   
-  Docker
+ -  Docker
   
-  dbt: (for transformation layer)
+ -  dbt: (for transformation layer)
+
+
+**Pipeline architecture**:
+
+             +----------------------+
+             |   External Source    |
+             |  (CSV/API/Postgres)  |
+             +----------+-----------+
+                        |
+                        v
+               (Airflow: Extract Task)
+                        |
+                        v
+             +----------------------+
+             |   Staging Table in   |
+             |     Snowflake        |
+             +----------+-----------+
+                        |
+                        v
+            (Airflow or dbt: Transform)
+                        |
+                        v
+         +------------------------------+
+         | Transformed Tables (Facts/Dim)|
+         +------------------------------+
+                        |
+                        v
+          (Airflow: Data Quality Check)
